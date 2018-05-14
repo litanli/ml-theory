@@ -12,6 +12,7 @@ X1 = iris.data
 species = {0:"Iris-setosa", 1:"Iris-versicolor", 2:"Iris-virginica"}
 y = [species[num] for num in iris.target]
 
+# standardize independent variables
 X1_mean = np.zeros(shape=(X1.shape[0],X1.shape[1]))
 X1_stdev = np.zeros(shape=(X1.shape[0],X1.shape[1]))
 N = X1.shape[0]
@@ -33,8 +34,25 @@ for j in range(0, X1.shape[1]):
         X1_stdev[i][j] = (sum_of_sq_residuals/N)**0.5
 
 X1 = (X1-X1_mean)/X1_stdev  
+
 # correlation matrix
 S = 1/(N-1)*X1.transpose().dot(X1) 
+
+# We let the PCs be linear combinations of all the IVs, but with loadings that 
+# give max variance (correlates well with the data points), and uncorrelated 
+# with all other PCs. 
+
+# More formally:
+# the ith principle component t_i is the linear combination of maximum variance 
+# that is uncorrelated with all previous PCs (axes orthogonal to all previous 
+# new axes), with loadings for each PC represented in vectors u_i
+#	Find u_i ∋ u_i^T*S*u_i is maximum
+#	subject to constraint ‖u_i‖=u_i'*u_i=1 for a unique solution
+#	and u_k'*S*u_i=0 ∀ k < i
+
+# Using Lagrange multiplier λ the optimization problem reduces to an eigenvalue
+# problem of the form S*u_i = λ_i*u_i.
+
 eigenvalues, eigenvectors = np.linalg.eig(S)
 
 # sort eigenvalues from largest to smallest (and corresponding eigenvectors)
@@ -42,7 +60,13 @@ idx = eigenvalues.argsort()[::-1]
 eigenvalues = eigenvalues[idx]
 eigenvectors = eigenvectors[:,idx]
 
-# choose PC1 and PC2, reducing dimension to l = 2
+# var(t_i) = λ_i. Intuitively, the larger the variance of a PC, the more that 
+# PC correlates with the data. Therefore, a simple measure of how well each PC
+# correlates with the data is λ_i/Σ(λ_i).
+ 
+# We choose PC1 and PC2, reducing dimension to l = 2 yet explaining over 95% 
+# of variability in the data! 
+
 (eigenvalues[0]+eigenvalues[1])/np.sum(eigenvalues)
 u1 = eigenvectors[:,0]
 u2 = -eigenvectors[:,1]
@@ -83,6 +107,8 @@ from sklearn import decomposition
 from sklearn import datasets
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 iris = datasets.load_iris()
 X = iris.data
