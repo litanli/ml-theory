@@ -109,7 +109,6 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
