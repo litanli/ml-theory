@@ -1,2 +1,3 @@
-Machine learning/dimensionality reduction techniques I found fascinating and challenged myself to code from scratch 
-using NumPy in Python. This exercise helped me gain deeper understanding and appreciation for how these tools work and I enjoyed the challenge of learning new mathematics.
+These are some ML algorithms I coded from scratch whilst learning the math behind them. The fit and inference logic is contained in the fit and predict methods of each estimator, and the estimators themselves follow sklearn's estimators API https://scikit-learn.org/stable/developers/develop.html.
+
+Each module should be accompanied by a compare file that runs a simple comparison between the from-scratch version and the corresponding sklearn estimator.
