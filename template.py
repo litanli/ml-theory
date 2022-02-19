@@ -1,18 +1,21 @@
 from sklearn.base import BaseEstimator
-from sklearn.utils.validation import check_X_y, check_is_fitted
+from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
 import pandas as pd
 import numpy as np
 
-class KNNClassifier(BaseEstimator):
+class EstimatorName(BaseEstimator):
     
     """Short description
     
     Parameters
     ----------
     param1 : str, default='default'
+        description
+        
+    param2 : str, default='default'
         description
         
     Attributes
@@ -76,6 +79,7 @@ class KNNClassifier(BaseEstimator):
         
         # Check that X and y have correct shape
         X, y = check_X_y(X, y)
+        # X = check_array(X)
         X, y = pd.DataFrame(X), pd.Series(y)
     
         # Extract unique labels into an array
